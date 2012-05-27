@@ -1,0 +1,39 @@
+<html>
+<head>
+</head>
+<body>
+<h2>Test using HTML File Upload</h2>
+<form method='POST' enctype='multipart/form-data' action='echoFile.php'>
+File to upload: <input type=file name='file'><br>
+Notes about the file: <input type=text name='note'><br>
+<br>
+<input type=submit value=Press> to upload the file!
+</form>
+
+<h2>Test using simple POST</h2>
+<form method='POST' enctype='multipart/form-data' action='echoFile.php'>
+<input type='textarea' name='file'> <br/>
+<br>
+<input type=submit value=Press> to upload the file!
+</form>
+
+<h2>Test using AJAX POST</h2>
+<input type='textarea' id='dataTextArea'> <br/>
+<button id='ajaxTestButton'>Ajax Test</button>
+
+<script src="../jquery-1.6.4.min.js"></script>
+<script>
+jQuery('#ajaxTestButton').click(
+         function() {
+            alert("ajaxTestButton: "+jQuery('#dataTextArea').val());
+            
+            jQuery.post("echoFile.php", 
+                        {file: jQuery('#dataTextArea').val()},
+                        function(data) {
+                           alert("returned: " + data);
+                        });
+         });
+</script>
+
+</body>
+</html>
