@@ -2,6 +2,9 @@
 <head>
 <title>GPX Route Editor</title>
 <link rel="stylesheet" href="leaflet/dist/leaflet.css" />
+<!--[if IE]>  
+<link rel="stylesheet" href="leaflet/dist/leaflet.ie.css" />
+<![endif]-->
 <link rel="stylesheet" href="gpxedit.css" />
 </head>
 <body>
@@ -14,11 +17,65 @@
 <div id="gpxDiv">
    <h2>GPX Output</h2>
    <textarea id="gpxText" cols=30 rows=20>gpx data will go here</textarea>
+   <button id="downloadButton">Download GPX Data</button>
 </div>
 <div id="debug"></div>
 
+<div id="uploadGpxDiv">
+  <form id='uploadGpxForm' 
+	method='POST' 
+	enctype='multipart/form-data' 
+	action='api/echoFile.php'
+	target='upload_target'>
+    File to upload: <input type=file name='file'><br>
+    Notes about the file: <input type=text name='note'><br>
+    <br>
+    <input type=submit value='Upload File'>
+  </form>
+  <iframe id="upload_target" 
+	  name="upload_target" 
+	  src="" 
+	  style="width:100;height:100;border:1px solid #fff;">
+  </iframe>
+
+</div>
+
+<!--hidden form to use to submit data for downloading-->
+<form hidden=true id='uploadForm' method='POST' enctype='multipart/form-data' action='api/downloadFile.php'>
+<input type='textarea' id='formDataTextArea' name='file'> <br/>
+</form>
+
 <script src="jquery-1.6.4.min.js"></script>
 <script src="leaflet/dist/leaflet.js"></script>
+
+<script>
+  // Upload Form handler
+  //$('#upload_target').load(alert("iframe onload"));
+  //$('#upload_target').ready(alert("iframe ready"));
+  //$('#upload_target').change(alert("iframe change"));
+
+  function WaitForIFrame() {
+        var iframe;
+        iframe = document.getElementById('upload_target');
+     alert("WaitForIFrame()"+iframe.toString());
+        if (iframe.readyState != "complete") {
+            setTimeout("WaitForIFrame();", 200);
+        } else {
+            done();
+        }
+    }
+
+  function done() {
+    alert("done!");
+  }
+
+  $('#uploadGpxForm').submit(function() {
+      alert("submit");
+      WaitForIFrame();
+   });
+
+</script>
+
 
 <script>
   // Global Variables
@@ -44,6 +101,17 @@
   jQuery('.markerDown').live('click',moveMarkerDown);
   jQuery('.markerTitle').live('change',changeMarkerTitle);
 
+  ////////////////////////////////////////////////////////////////
+  // download the gpx data.
+  // copies the data into a hidden form and submits it
+  // the resulting data includes the headers to force a download
+  ////////////////////////////////////////////////////////////////
+  jQuery('#downloadButton').click(
+         function() {
+            alert("downloadButton: "+jQuery('#gpxText').val());
+            jQuery('#formDataTextArea').val(jQuery('#gpxText').val());
+            jQuery('#uploadForm').submit();
+         });
 
   ///////////////////////////////////////////////////
   function onMapClick(e) {

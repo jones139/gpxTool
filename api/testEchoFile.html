@@ -11,11 +11,24 @@ Notes about the file: <input type=text name='note'><br>
 </form>
 
 <h2>Test using simple POST</h2>
-<form method='POST' enctype='multipart/form-data' action='echoFile.php'>
-<input type='textarea' name='file'> <br/>
-<br>
-<input type=submit value=Press> to upload the file!
+<label>Enter Data:</label><input type='textarea' id='dataTextArea'> <br/>
+<button id='postFormButton'>Download File</button>
+
+<form hidden=true id='uploadForm' method='POST' enctype='multipart/form-data' action='echoFile.php'>
+<input type='textarea' id='formDataTextArea' name='file'> <br/>
 </form>
+
+<script src="../jquery-1.6.4.min.js"></script>
+<script>
+jQuery('#postFormButton').click(
+         function() {
+            alert("postFormButton: "+jQuery('#dataTextArea').val());
+            jQuery('#formDataTextArea').val(jQuery('#dataTextArea').val());
+            jQuery('#uploadForm').submit();
+         });
+</script>
+
+
 
 <h2>Test using AJAX POST</h2>
 <input type='textarea' id='dataTextArea'> <br/>

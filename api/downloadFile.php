@@ -40,10 +40,10 @@ else {
   }
   else {
       // Set headers
-      //header("Cache-Control: public");
-      //header("Content-Description: File Transfer");
-      //header("Content-Disposition: attachment; filename=$fname");
-      //header("Content-Type: text/html");
+      header("Cache-Control: public");
+      header("Content-Description: File Transfer");
+      header("Content-Disposition: attachment; filename=$fname");
+      header("Content-Type: text/html");
       //header("Content-Transfer-Encoding: binary");
       echo "Data = " . $data;
   }
