@@ -16,8 +16,12 @@ body {
     height:100%;
 }
 
+#debug {
+width:100%;
+background: rgb(255,200,200);
+height: 100px;
+
 #gpxDiv {
-    float:left;
     width:300px;
     background: rgb(200,200, 200);
     border-style: outset;

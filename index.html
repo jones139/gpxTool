@@ -19,8 +19,10 @@
    <textarea id="gpxText" cols=30 rows=20>gpx data will go here</textarea>
    <button id="downloadButton">Download GPX Data</button>
 </div>
+<br/>
 <div id="debug"></div>
 
+<br/>
 <div id="uploadGpxDiv">
   <form id='uploadGpxForm' 
 	method='POST' 
@@ -35,7 +37,7 @@
   <iframe id="upload_target" 
 	  name="upload_target" 
 	  src="" 
-	  style="width:100;height:100;border:1px solid #fff;">
+	  style="width:200;height:300;border:1px solid #fff;">
   </iframe>
 
 </div>
@@ -50,29 +52,34 @@
 
 <script>
   // Upload Form handler
-  //$('#upload_target').load(alert("iframe onload"));
-  //$('#upload_target').ready(alert("iframe ready"));
-  //$('#upload_target').change(alert("iframe change"));
 
-  function WaitForIFrame() {
-        var iframe;
-        iframe = document.getElementById('upload_target');
-     alert("WaitForIFrame()"+iframe.toString());
-        if (iframe.readyState != "complete") {
-            setTimeout("WaitForIFrame();", 200);
-        } else {
-            done();
-        }
-    }
 
-  function done() {
-    alert("done!");
-  }
+  ///////////////////////////////////////////////////
+  // WaitForIFrame(): Checks the length of the iframe's contents.
+  // Loops until contents length >26 (26 = length of empty head and body blocks).
+  // NOTE: This is very crude - must be a better way than this!  Should at least
+  // check that lenght has not changed for a while?
+  // I did it this way because the changed() load() events were not being 
+  // triggered for non-html data.
+  // 02jun2012  GJ  ORIGINAL VERSION
+  //
+  function waitForIFrame() {
+   var iframeContents = $("iframe").contents().find('html').html();
+   jQuery("#debug").html(iframeContents.length + ":" + iframeContents+ "...");
+   if (iframeContents.length <= 26) {
+     setTimeout("waitForIFrame();", 1000);
+   } else {
+     setTimeout(function () {
+        var iframeContents = $("iframe").contents().find('html body').html();
+        alert("done! - "+iframeContents);
+     },1000);
+   }
+ }
 
-  $('#uploadGpxForm').submit(function() {
-      alert("submit");
-      WaitForIFrame();
+ $('#uploadGpxForm').submit(function() {
+      waitForIFrame();
    });
+
 
 </script>
 
