@@ -8,39 +8,40 @@
 <link rel="stylesheet" href="gpxedit.css" />
 </head>
 <body>
-<div id="map"></div> 
-<div id="routePtsDiv">
-  <h2>Route Points</h2>
-  <ol id="routePtsOl">
-  </ol>
-</div>
-<div id="gpxDiv">
-   <h2>GPX Output</h2>
-   <textarea id="gpxText" cols=30 rows=20>gpx data will go here</textarea>
-   <button id="downloadButton">Download GPX Data</button>
-</div>
-<br/>
-<div id="debug"></div>
+  <div id="mainContainer">
+    <div id="map">
+    </div> 
+    <div id="routePtsDiv">
+      <h2>Route Points</h2>
+      <ol id="routePtsOl">
+      </ol>
+    </div>
+  </div>
+  <div id="gpxDiv">
+    <h2>GPX Output</h2>
+    <textarea id="gpxText" cols=30 rows=20>gpx data will go here</textarea>
+    <button id="downloadButton">Download GPX Data</button>
+  </div>
+  <div id="debug"></div>
 
-<br/>
-<div id="uploadGpxDiv">
-  <form id='uploadGpxForm' 
-	method='POST' 
-	enctype='multipart/form-data' 
-	action='api/echoFile.php'
-	target='upload_target'>
-    File to upload: <input type=file name='file'><br>
-    Notes about the file: <input type=text name='note'><br>
-    <br>
-    <input type=submit value='Upload File'>
-  </form>
-  <iframe id="upload_target" 
-	  name="upload_target" 
-	  src="" 
-	  style="width:200;height:300;border:1px solid #fff;">
-  </iframe>
-
-</div>
+  <div id="uploadGpxDiv">
+    <form id='uploadGpxForm' 
+	  method='POST' 
+	  enctype='multipart/form-data' 
+	  action='api/echoFile.php'
+	  target='upload_target'>
+      File to upload: <input type=file name='file'><br>
+      Notes about the file: <input type=text name='note'><br>
+      <br>
+      <input type=submit value='Upload File'>
+    </form>
+    <iframe id="upload_target" 
+	    name="upload_target" 
+	    src="" 
+	    style="width:200;height:300;border:1px solid #fff;">
+    </iframe>
+    
+  </div>
 
 <!--hidden form to use to submit data for downloading-->
 <form hidden=true id='uploadForm' method='POST' enctype='multipart/form-data' action='api/downloadFile.php'>
