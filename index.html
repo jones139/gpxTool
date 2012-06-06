@@ -28,7 +28,7 @@
     <form id='uploadGpxForm' 
 	  method='POST' 
 	  enctype='multipart/form-data' 
-	  action='api/echoFile.php'
+	  action='api/uploadFile.php'
 	  target='upload_target'>
       File to upload: <input type=file name='file'><br>
       Notes about the file: <input type=text name='note'><br>
@@ -50,6 +50,7 @@
 
 <script src="jquery-1.6.4.min.js"></script>
 <script src="leaflet/leaflet.js"></script>
+<script src="leaflet-plugins/layer/vector/GPX.js"></script>
 
 <script>
   // Upload Form handler
@@ -70,9 +71,23 @@
    if (iframeContents.length <= 26) {
      setTimeout("waitForIFrame();", 1000);
    } else {
-     setTimeout(function () {
-        var iframeContents = $("iframe").contents().find('html body').html();
-        alert("done!");
+	setTimeout(function () {
+        //var iframeContents = $("iframe").contents().find('html body').html();
+        var gpxURL = "api/"+$("iframe").contents().find('html body a').attr('href');
+	alert("done! - gpxURL="+gpxURL);
+	var track = new L.GPX(gpxURL, {async: true});
+	map.addLayer(track);
+        track.on("loaded", function(e) { 
+                            var retStr="";
+                            var key;
+                            for (key in e.target) {
+                              retStr = retStr + key + ", ";
+                            }
+                            alert("loaded: "+e.type+": "+retStr);
+                            map.fitBounds(e.target.getBounds()); 
+                       }
+         );
+
      },1000);
    }
  }
