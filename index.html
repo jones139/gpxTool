@@ -24,6 +24,10 @@
   </div>
   <div id="debug"></div>
 
+<div>
+  <button id="testGPXParser">Test GPX Parser</button>
+</div>
+
   <div id="uploadGpxDiv">
     <form id='uploadGpxForm' 
 	  method='POST' 
@@ -99,6 +103,23 @@
 
 </script>
 
+
+<script src='gpx_parser.js'></script>
+<script>
+ $('#testGPXParser').click(function() {
+      alert("testGPXParser");
+ var gpxObj = GPXParser.loadFromURL("api/uploads/SummerHill Loop_2012-06-05_08-03-58.gpx",
+ {async:true});
+   });
+
+
+GPXParser.onLoad = function() {
+    alert("GPXParser.onLoad - version 2");
+    var gpxObj = GPXParser._gpxObj;
+    var keys = "";
+    alert("gpxParserCB - gpxObj = "+GPXParser.toString());
+}
+</script>
 
 <script src='routeEditor.js'></script>
 
