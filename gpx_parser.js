@@ -27,20 +27,7 @@ var GPXParser = {
     loadXML: function (url, cb, options, async) {
 	// Perform download of data from url.  Calls callback function
 	// cb on success.
-	var req;
-	if (async === undefined) { async = this.options.async; }
-	if (options === undefined) { options = this.options; }
-	
-	req = new window.XMLHttpRequest();
-	req.open('GET', url, async);
-	try {
-	    req.overrideMimeType('text/xml'); // unsupported by IE
-	} catch(e) {}
-	req.onreadystatechange = function() {
-	    if (req.readyState !== 4) { return; }
-	    if(req.status === 200) { cb(req.responseXML, options); }
-	};
-	req.send(null);
+	jQuery.get(url,cb);
     },
     
     addGPX: function (url, options, async) {
