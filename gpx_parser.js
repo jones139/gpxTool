@@ -24,25 +24,10 @@ var GPXParser = {
 	alert("GPXParser.onLoad()!");
     },
 
-    loadXML: function (url, cb, options, async) {
-	// Perform download of data from url.  Calls callback function
-	// cb on success.
-	jQuery.get(url,cb);
-    },
-    
     addGPX: function (url, options, async) {
 	// Download the GPX file from url.  Calls _addGPX() to parse it.
 	var _this = this;
-	var cb = function(gpx, options) { _this._addGPX(gpx, options); };
-	this.loadXML(url, cb, options, async);
-    },
-    
-    _addGPX: function(gpxStr, options) {
-	// parse the gpx data in the string gpxStr and assign it to
-	//   an object variable.
-	// calls this.onLoad callback function once the data is parsed.
-	var gpxData = this.parseGPX(gpxStr, options);
-	this.onLoad();
+	jQuery.get(url,function(gpx) { _this.parseGPX(gpx); _this.onLoad(); });
     },
     
     parseGPX: function (xml, options) {
