@@ -19,11 +19,7 @@ else {
     
     $target_path = $target_path . $fname; 
     
-    if(move_uploaded_file($_FILES['file']['tmp_name'], $target_path)) {
-      echo "<a href='".$target_path."'>link</a>";
-      } else{
-	echo "There was an error uploading the file, please try again!";
-      }
+    $gpxData = file_get_contents($_FILES['file']['tmp_name'], false))
   }
 }
   ?>

@@ -1,33 +1,93 @@
 <?php
-  $jobData       = $_REQUEST['data'] ;
-  $jobObj        = json_decode($jobData);
+include("APIConfig.php");
+include("dbconn.php");
+if (!isset($_FILES["file"])) {
+  echo "Error:  you must provide a file as a file upload.";
+}
+else {
+  if ($_FILES["file"]["error"] > 0) {
+    echo "Error: " . $_FILES["file"]["error"] . "<br />";
+  }
+  else {
+    $gpxData = file_get_contents($_FILES['file']['tmp_name'],false);
 
-  $title=$jobObj->title;
-  $renderer = $jobObj->renderer;
-  $nowStr = gmDate("Y-m-d H:i:s");
-  $lat = $jobObj->origin->lat;
-  $lon = $jobObj->origin->lon;
 
-  include("APIConfig.php");
-  include("dbconn.php");
+    $nowStr = gmDate("Y-m-d H:i:s");
 
-  $query  = "insert into queue (status, title, originlat, originlon,"
-  	  . "subdate, renderer, jobConfig) values "
-  	  . "( 1, "."'".$title."'" 
-	  . ", ".$lat.", ".$lon.", "
-	  . "'".$nowStr."',"
-	  . $renderer."," 
-	  ." '".$jobData."');";
-       
-  $result = mysql_query($query) 
-  	  or die('Query failed: ' . mysql_error());
+    $title="Default Title";
+    $userNo = 0;
+    $minLat=360.0;
+    $minLon=360.0;
+    $maxLat=-180.0;
+    $maxLon=-180.0;
+    $track=0;
+    $route=0;
+    $waypts=0;
 
-  $jobNo=mysql_insert_id();
 
-  #print $dataDir;
-  mkdir ($dataDir."/".$jobNo,0777);
-  chmod ($dataDir."/".$jobNo,0777);
-   
-   print $jobNo;
+    $xml = new SimpleXMLElement($gpxData);
+    //echo $xml->getName() . "<br />";
+    
+    foreach($xml->children() as $child)
+      {
+	//echo $child->getName() . ": " . $child . "<br />";
+	switch ($child->getName()) {
+	case "gpx":
+	  echo "found gpx<br/>";
+	  break;
+	case 'trk':
+	  echo "found trk<br/>";
+	  $track = 1;
+	  $title = $child->name;
+	  foreach($child->children() as $trkElem)
+	    {
+	      if ($trkElem->getName()=="trkseg") {
+		foreach ($trkElem->children() as $trkPt) {
+		  $lat = floatval($trkPt->attributes()->lat);
+		  $lon = floatval($trkPt->attributes()->lon);
+		  if ($lat < $minLat) { $minLat = $lat; }
+		  if ($lat > $maxLat) { $maxLat = $lat; }
+		  if ($lon < $minLon) { $minLon = $lon; }
+		  if ($lon > $maxLon) { $maxLon = $lon; }
+		  //echo "found trkseg->".$trkPt->getName().": lat=".$lat.", lon=".$lon."<br/>";
+		}
+	      }
+	    }
+	  break;
+	case 'route':
+	  echo "found route<br/>";
+	  break;
+	case 'waypt':
+	  echo "found waypt<br/>";
+	  break;
+	default:
+	  echo "unknown gpx element "+$child->get_name()."<br/>";
 
+	}
+      }   
+	     
+
+
+
+    
+    $query  = "insert into gpxFiles (title, userNo, minLat, minLon, maxLat,maxLon,"
+      . "track,route,waypts,date,gpxData) values "
+      . "( '".$title."', ".$userNo.", " 
+      . $minLat.", ".$minLon.", "
+      . $maxLat.", ".$maxLon.", "
+      . $track.", ".$route.", ".$waypts.","
+      . "'".$nowStr."',"
+      . "'".$gpxData."'" 
+      .");";
+    print $query;
+    
+    $result = mysql_query($query) 
+      or die('Query failed: ' . mysql_error());
+    
+    $jobNo=mysql_insert_id();
+    
+    print $jobNo;
+    
+  }
+}
 ?>

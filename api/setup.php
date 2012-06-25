@@ -16,7 +16,8 @@ mysql_query($sql,$dbconn)
 
 $sql = <<<'EOD'
 create table gpxFiles (
-       	     	   gpxNo int not null auto_increment, 
+       	     	   gpxNo int not null auto_increment,
+		   userNo int,
                    title varchar(256),
 		   minLat float,
 		   minLon float,
