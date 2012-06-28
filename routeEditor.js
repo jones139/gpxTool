@@ -216,7 +216,7 @@ RE.makeGPXData = function () {
     gpxlines.push("<gpx version=\"1.1\"");
     gpxlines.push("     creator=\"Graham Jones\">");
     gpxlines.push("<rte>");
-    gpxlines.push("    <name>Route Created by Graham's Leaflet Based Route Editor</name>");
+    gpxlines.push("    <name>Route Created by Grahams Leaflet Based Route Editor</name>");
     for ( var i = 0; i<RE.pointsLayers.length;i++) {
 	gpxlines.push(RE.rtept2XML(i));
    }
@@ -253,7 +253,35 @@ jQuery('.markerTitle').live('change',RE.changeMarkerTitle);
 ////////////////////////////////////////////////////////////////
 jQuery('#downloadButton').click(
     function() {
-        alert("downloadButton: "+jQuery('#gpxText').val());111111
-        jQuery('#formDataTextArea').val(jQuery('#gpxText').val());
-        jQuery('#uploadForm').submit();
+        alert("downloadButton: "+jQuery('#gpxText').val());
+	jQuery('#hiddenForm').attr('action','api/downloadFile.php');
+        jQuery('#hiddenFormDataTextArea').val(jQuery('#gpxText').val());
+        jQuery('#hiddenFormTitleText').val(jQuery('#gpxTitle').val());
+        jQuery('#hiddenFormGpxNo').val(jQuery('#gpxNo').val());
+        jQuery('#hiddenForm').submit();
     });
+
+jQuery('#putButton').click(
+    function() {
+        alert("downloadButton: "+jQuery('#gpxText').val());
+	jQuery('#hiddenForm').attr('action','api/uploadGPX.php');
+        jQuery('#hiddenFormDataTextArea').val(jQuery('#gpxText').val());
+        jQuery('#hiddenFormTitleText').val(jQuery('#gpxTitle').val());
+        jQuery('#hiddenFormGpxNo').val(jQuery('#gpxNo').val());
+        jQuery('#hiddenForm').submit();
+    });
+
+jQuery('#getButton').click(
+    function() {
+        alert("getButton: ");
+	var $dialog = $('<div></div>')
+	    .html("GPX File Number: <input id='dialogGPXFileNumber' size=3></input><br/><button id='dialogOkButton'>OK</button>")
+	    .dialog({
+		autoOpen: false,
+		title: 'Basic Dialog'
+	    });
+	$dialog('#dialogOkButton').click( function () { alert("ok clicked");});
+
+	$dialog.dialog('open');
+    });
+

@@ -5,6 +5,7 @@
 <!--[if IE]>  
 <link rel="stylesheet" href="leaflet/leaflet.ie.css" />
 <![endif]-->
+ <link rel="stylesheet" href="css/smoothness/jquery-ui-1.8.18.custom.css" />
 <link rel="stylesheet" href="gpxedit.css" />
 </head>
 <body>
@@ -19,8 +20,13 @@
   </div>
   <div id="gpxDiv">
     <h2>GPX Output</h2>
+    <label>Title</label>
+    <input id="gpxTitle" size=20></input>
+    (id=<input id="gpxNo" size=3 disabled></input>)</br>
     <textarea id="gpxText" cols=30 rows=10>gpx data will go here</textarea>
-    <button id="downloadButton">Download GPX Data</button>
+    <button id="getButton">Retrieve from Server</button>
+    <button id="putButton">Save to Server</button>
+    <button id="downloadButton">Save to Disk</button>
   </div>
   <div id="debug"></div>
 
@@ -35,7 +41,6 @@
 	  action='api/uploadGPX.php'
 	  target='upload_target'>
       File to upload: <input type=file name='file'><br>
-      Notes about the file: <input type=text name='note'><br>
       <br>
       <input type=submit value='Upload File'>
     </form>
@@ -48,11 +53,19 @@
   </div>
 
 <!--hidden form to use to submit data for downloading-->
-<form hidden=true id='uploadForm' method='POST' enctype='multipart/form-data' action='api/downloadFile.php'>
-<input type='textarea' id='formDataTextArea' name='file'> <br/>
+<form 
+   hidden=false
+   id='hiddenForm' 
+   method='POST' 
+   enctype='multipart/form-data' 
+   action='api/downloadFile.php'>
+  <label>Title</label> <input id='hiddenFormTitleText' name='title' type=text><br>
+  <input id='hiddenFormGpxNo' name='gpxNo' type=text></input><br>
+  <input type='textarea' id='hiddenFormDataTextArea' name='gpxData'> <br/>
 </form>
 
-<script src="jquery-1.6.4.min.js"></script>
+<script src="jquery-1.7.1.min.js"></script>
+<script src="jquery-ui-1.8.18.custom.min.js"></script>
 <script src="leaflet/leaflet.js"></script>
 <script src="leaflet-plugins/layer/vector/GPX.js"></script>
 
