@@ -1,12 +1,12 @@
 <html>
 <head>
 <title>GPX Route Editor</title>
-<link rel="stylesheet" href="leaflet/leaflet.css" />
+<link rel="stylesheet" href="js/leaflet/leaflet.css" />
 <!--[if IE]>  
-<link rel="stylesheet" href="leaflet/leaflet.ie.css" />
+<link rel="stylesheet" href="js/leaflet/leaflet.ie.css" />
 <![endif]-->
  <link rel="stylesheet" href="css/smoothness/jquery-ui-1.8.18.custom.css" />
-<link rel="stylesheet" href="gpxedit.css" />
+<link rel="stylesheet" href="css/gpxedit.css" />
 </head>
 <body>
   <div id="mainContainer">
@@ -64,10 +64,12 @@
   <input type='textarea' id='hiddenFormDataTextArea' name='gpxData'> <br/>
 </form>
 
-<script src="jquery-1.7.1.min.js"></script>
-<script src="jquery-ui-1.8.18.custom.min.js"></script>
-<script src="leaflet/leaflet.js"></script>
-<script src="leaflet-plugins/layer/vector/GPX.js"></script>
+<script src="js/jquery-1.7.1.min.js"></script>
+<script src="js/jquery-ui-1.8.18.custom.min.js"></script>
+<script src="js/leaflet/leaflet.js"></script>
+<script src="js/leaflet-plugins/layer/vector/GPX.js"></script>
+<script src='js/routeEditor.js'></script>
+<script src='js/gpx_parser.js'></script>
 
 <script>
   // Upload Form handler
@@ -117,7 +119,6 @@
 </script>
 
 
-<script src='gpx_parser.js'></script>
 <script>
  $('#testGPXParser').click(function() {
       alert("testGPXParser");
@@ -134,7 +135,6 @@ GPXParser.onLoad = function() {
 }
 </script>
 
-<script src='routeEditor.js'></script>
 
 </body>
 </html>
