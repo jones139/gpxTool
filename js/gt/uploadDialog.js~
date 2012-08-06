@@ -1,0 +1,26 @@
+// uploadDialog - code to display the gpx file upload dialog
+// using dojo/dijit
+//
+dojo.provide("gt.uploadDialog");
+
+gt.uploadDialog.init = function() {
+    alert("gt.uploadDialog.init()");
+    dojo.addOnLoad(function(){
+		       alert("addOnLoad()");
+		       var d = new dijit.Dialog();
+		       var b = new dijit.form.Button({
+							 label:"button"
+						     });
+		       var handle = dojo.connect(b,"onClick",
+						 function() {
+						     d.hide();
+						     dojo.disconnect(handle);
+						 });
+		       d.setContent(b.domNode);
+		       d.show();
+		   });
+};
+
+gt.uploadDialog.show = function() {
+    d.show();
+}

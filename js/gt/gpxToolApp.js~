@@ -1,0 +1,6 @@
+<script>
+    require(["demo/app", "dojo/domReady!"], function(demoApp) {
+        demoApp.init();
+    });
+</script>
+
