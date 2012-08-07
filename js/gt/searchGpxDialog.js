@@ -6,6 +6,7 @@ define(["dojo","dijit/Dialog",
 	"dojo/dom-construct"
 	],
        function(dojo,dialog,form,button,domConstruct) {
+	   var loadGPXCallback = null;
 	   var d = new dijit.Dialog({title:'List GPX Files'});
 	   var f = new dijit.form.Form({id:'searchGpxForm',
 				       method:'get',
@@ -21,6 +22,16 @@ define(["dojo","dijit/Dialog",
 	   //f.containerNode.appendChild(ul);
 	   d.setContent(f);
 
+	   var loadButtonCallback = function() {
+	       //alert("loadButtonCallback");
+	       dojo.query("input:checked").forEach(function(node,index,arr) {
+						       var val = node.value;
+						       loadGPXCallback(val);
+						       d.hide();
+						   }
+						  );
+	   }
+
 	   var makeList = function(res) {
 	       console.log("makeList starting...");
 	       console.log(res);
@@ -32,18 +43,21 @@ define(["dojo","dijit/Dialog",
 						 }
 					     },
 					    f.containerNode);
-	       var ul = domConstruct.create("ul",null,div);  
+	       var loadButton = new dijit.form.Button({
+					     label:"Load Selected GPX Files"
+					 });
+	       div.appendChild(loadButton.domNode);
+	       var ul = domConstruct.create("ul",null);
+	       div.appendChild(ul);
 	       var key;
 	       for (key in res) {
 		   console.log(key);
 		   li = domConstruct.create("li",{
-						innerHTML:key+' : '+res[key].title
+						innerHTML:'<input type="checkbox" value="'+key+'">'+key+' : '+res[key].title
 					    },
 					    ul);
-		   //ul.appendChild(li);
 	       }
-	       //div.appendChild(ul);
-	       //f.containerNode.appendChild(div);
+	       dojo.connect(loadButton,"onClick",loadButtonCallback);
 	       console.log("makeList complete");
 	   };
 
@@ -55,10 +69,8 @@ define(["dojo","dijit/Dialog",
 				url : "api/listGPX.php",
 				load : function(response,ioArgs) {
 				    console.log("success!");
-				    //console.log(response,ioArgs);
 				    var responseObj = JSON.parse(response);
 				    makeList(responseObj);
-				    console.log("back in load()");
 				    return response;
 				},
 				error : function(response,ioArgs) {
@@ -80,7 +92,7 @@ define(["dojo","dijit/Dialog",
 
 
 	   return {
-	       show : function() { d.show();},
+	       show : function(cb) { loadGPXCallback=cb; d.show();},
 	       hide : function() { d.hide();}
 	   };
        });
