@@ -30,7 +30,7 @@ define(["dojo","dijit/Dialog",
 						       d.hide();
 						   }
 						  );
-	   }
+	   };
 
 	   var makeList = function(res) {
 	       console.log("makeList starting...");
@@ -53,7 +53,7 @@ define(["dojo","dijit/Dialog",
 	       for (key in res) {
 		   console.log(key);
 		   li = domConstruct.create("li",{
-						innerHTML:'<input type="checkbox" value="'+key+'">'+key+' : '+res[key].title
+						innerHTML:'<input type="checkbox" value="'+res[key].gpxNo+'">'+res[key].gpxNo+' : '+res[key].title
 					    },
 					    ul);
 	       }

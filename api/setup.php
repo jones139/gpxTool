@@ -27,7 +27,7 @@ create table gpxFiles (
 		   route boolean,
 		   waypts boolean,
                    date timestamp,
-                   gpxData blob,
+                   gpxData longblob,
 		   primary key (gpxNo)
 );
 EOD;
